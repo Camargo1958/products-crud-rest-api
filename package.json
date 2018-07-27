@@ -1,0 +1,21 @@
+{
+  "name": "node-crud-rest-api",
+  "version": "1.0.0",
+  "description": "Node.js MongoDB Restful API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Camargo1958/products-crud-rest-api-node_modules.git"
+  },
+  "author": "Hazak",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "1.18.3",
+    "express": "4.16.3",
+    "mongoose": "5.2.5",
+    "request": "2.87.0"
+  }
+}
