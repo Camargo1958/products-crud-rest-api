@@ -25,7 +25,7 @@ var Schema = mongoose.Schema;
 */
 
 var ProductSchema = new Schema({
-    nome: String,
+    name: String,
     price: Number,
     description: String
 });
