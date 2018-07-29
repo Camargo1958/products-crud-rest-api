@@ -66,8 +66,16 @@ router.route('/products')
             res.json({ message : 'Product saved with success!' });
         });
 
-    });
+    })
 
+    /* 2)Method: Select all Products (acess by: GET http://localhost:8000/api/products) */
+    .get(function(req, res) {
+        Product.find(function(error, products) {
+            if(error)
+                res.send('Error on trying to select all Products : '+error);
+            res.json(products);
+        });
+    });
 
 // Defining routes prefix '/api'
 app.use('/api',router);
