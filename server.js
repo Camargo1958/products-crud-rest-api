@@ -19,6 +19,9 @@ var Product = require('./app/models/product');
 // URI MLab - Cloud
 mongoose.connect('mongodb://hazak:hzk123@ds257981.mlab.com:57981/product-api-test',{ useNewUrlParser: true });
 
+// URI MLab - Cloud
+//mongoose.connect('mongodb://localhost:27017/product-api-test',{ useMongoClient: true });
+
 // URI local MongoDB
 // mongoose.connect('mongodb://localhost/test');
 
@@ -76,6 +79,68 @@ router.route('/products')
             res.json(products);
         });
     });
+
+    // Routes that end in '/poducts/:product_id (wil serve for : GET, PUT & DELETE: id):
+router.route('/products/:product_id')
+
+    /* 3)Method: Select Product by Id (acess by: GET http://localhost:8000/api/products/:product_id) */
+    .get(function (req, res) {
+        /* To select some Product by Id*/
+        Product.findById(req.params.product_id, function(error, product){
+            if(error || product===null){
+                //res.send('Product Id not found :' + error);
+                res.json({ message: 'Product Id not found!' });
+            }
+            else{
+                res.json(product);
+            } 
+        });
+    })
+
+    /* 4)Method: Update Product by Id (acess by: PUT http://localhost:8000/api/products/:product_id) */
+    .put(function (req, res) {
+        /* 1 - Select Product by Id*/
+        Product.findById(req.params.product_id, function(error, product){
+            if(error || product===null)
+                {
+                    //res.send('Product Id not found :' + error);
+                    res.json({ message: 'Product Id not found, not updated!' });
+                }
+            else{
+                    /* 2 - Update Product fields */
+                    product.name = req.body.name;
+                    product.price = req.body.price;
+                    product.description = req.body.description;
+
+                    /* 3 - Save Product data */
+                    product.save(function(error){
+                        if(error)
+                            res.send('Error on save Product :' + error);
+                        res.json({ message: 'Product updated!' });
+                    });
+            }
+        });
+    })
+
+    /* 5)Method: Delete Product by Id (acess by: DELETE http://localhost:8000/api/products/:product_id) */
+    .delete(function (req, res) {
+        _id = req.params.product_id;
+        Product.findById(_id, function(error, product){
+            if(error || product===null)
+                {
+                    res.json({ message: 'Product Id not found, not deleted! ' + error });
+                }
+            else{
+                Product.remove({_id}, function(error){
+                    if(error)
+                        res.json({ message: 'Product not deleted, ERROR! ' + error });
+                    res.json({ message: 'Product deleted!' });
+                });
+            }
+        })
+    });
+
+
 
 // Defining routes prefix '/api'
 app.use('/api',router);
